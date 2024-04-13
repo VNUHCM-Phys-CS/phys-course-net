@@ -7,6 +7,5 @@ const drawFunc = draw({width,height,margin});
 // load data
 loadNodeLinks()
     .then(graph=>{
-        drawFunc.draw(graph);
-        createForce(graph,drawFunc.paramas(),drawFunc.updateNode)
+        drawFunc.graph(graph).initZoom().draw().forceInit();
 });
