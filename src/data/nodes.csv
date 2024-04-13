@@ -1,0 +1,146 @@
+﻿id,NAME,YEAR,REQUIRE,CATEGORY,TERM
+1,Triết học Mác - Lênin,1,1,Đại cương,1
+2,Kinh tế chính trị Mác - Lênin,1,1,Đại cương,1
+3,Pháp luật đại cương,1,1,Đại cương,1
+4,Vi tích phân 1B,1,1,Đại cương,1
+5,Thực hành Vi tích phân 1B,1,1,Đại cương,1
+6,Vật lý đại cương 1 (Cơ - Nhiệt),1,1,Đại cương,1
+7,Giới thiệu ngành Vật lý,1,1,Đại cương,1
+8,Anh văn 1,1,2,Đại cương,1
+9,Thể dục 1,1,2,Đại cương,1
+10,Giáo dục quốc phòng – An ninh,1,2,Đại cương,1
+11,Hóa đại cương 1,1,1,Đại cương,2
+12,Vi tích phân 2B,1,1,Đại cương,2
+13,Đại số tuyến tính,1,1,Đại cương,2
+14,Vật lý đại cương 2 (Điện từ - Quang),1,1,Đại cương,2
+15,Vật lý đại cương 3 (Cơ - Nhiệt nâng cao),1,1,Đại cương,2
+16,Thực hành Vật lý đại cương,1,1,Đại cương,2
+17,Tin học cơ sở,1,2,Đại cương,2
+18,Anh văn 2,1,2,Đại cương,2
+19,Thể dục 2,1,2,Đại cương,2
+20,Chủ nghĩa xã hội khoa học,2,1,Đại cương,1
+21,Lịch sử Đảng Cộng sản Việt Nam,2,1,Đại cương,1
+22,Tư tưởng Hồ Chí Minh,2,1,Đại cương,1
+23,Xác suất thống kê,2,1,Đại cương,1
+24,Vật lý hiện đại (Lượng tử - Nguyên tử - Hạt nhân),2,1,Đại cương,1
+25,Kinh tế đại cương ,2,0,Đại cương,1
+26,Tâm lý đại cương ,2,0,Đại cương,1
+27,Phương pháp luận sáng tạo ,2,0,Đại cương,1
+28,Khoa học trái đất ,2,0,Đại cương,1
+29,Môi trường đại cương ,2,0,Đại cương,1
+30,Phát triển bền vững ,2,0,Đại cương,1
+31,Hàm phức,2,1,Cơ sở ngành,1
+32,Thực hành vật lý cơ sở,2,1,Cơ sở ngành,1
+33,Anh văn 3,2,2,Đại cương,1
+34,Các phương pháp toán lý,2,1,Cơ sở ngành,2
+35,Điện tử cơ bản,2,1,Cơ sở ngành,2
+36,Cơ lý thuyết,2,1,Cơ sở ngành,2
+37,Cơ lượng tử 1,2,1,Cơ sở ngành,2
+38,Điện động lực,2,1,Cơ sở ngành,2
+39,Vật lý thống kê ,2,1,Cơ sở ngành,2
+40,Kỹ thuật lập trình ,2,1,Cơ sở ngành,2
+41,Anh văn 4,2,2,Đại cương,2
+42,Phương pháp tính,3,1,Chuyên ngành hướng 1,1
+43,Vật lý hạt nhân,3,1,Chuyên ngành hướng 1,1
+44,Cơ lượng tử nâng cao ,3,1,Chuyên ngành hướng 1,1
+45,Vật lý thiên văn ,3,0,Chuyên ngành hướng 1,1
+46,Đổi mới sáng tạo ,3,0,Chuyên ngành hướng 1,1
+47,Các phương pháp NDT ,3,0,Chuyên ngành hướng 1,1
+48,Vật lý môi trường ,3,0,Chuyên ngành hướng 1,1
+49,Vũ trụ học ,3,0,Chuyên ngành hướng 1,1
+50,Tư duy phản biện ,3,0,Chuyên ngành hướng 1,1
+51,Lập trình hướng đối tượng ,3,0,Chuyên ngành hướng 1,1
+52,Trường Vật lý: lý thuyết và ứng dụng,3,1,Chuyên ngành hướng 1,2
+53,Vật lý tính toán,3,1,Chuyên ngành hướng 1,2
+54,Trạng thái rắn cơ bản,3,1,Chuyên ngành hướng 1,2
+55,Vật lý hạt cơ bản ,3,0,Chuyên ngành hướng 1,2
+56,Vật lý năng lượng cao ,3,0,Chuyên ngành hướng 1,2
+57,Những vấn đề mới trong vật lý hiện đại ,3,0,Chuyên ngành hướng 1,2
+58,Xử lý ảnh ,3,0,Chuyên ngành hướng 1,2
+59,Khoa học dữ liệu ,3,0,Chuyên ngành hướng 1,2
+60,Mô phỏng và mô hình hóa ,3,0,Chuyên ngành hướng 1,2
+61,Lập trình hướng đối tượng ,3,1,Chuyên ngành hướng 2,1
+62,Mô phỏng và mô hình hóa,3,1,Chuyên ngành hướng 2,1
+63,Hệ thống số và ứng dụng,3,1,Chuyên ngành hướng 2,1
+64,Phương pháp tính ,3,0,Chuyên ngành hướng 2,1
+65,Vật lý chất rắn ,3,0,Chuyên ngành hướng 2,1
+66,Máy học ,3,0,Chuyên ngành hướng 2,1
+67,Xử lý tín hiệu số ,3,0,Chuyên ngành hướng 2,1
+68,Vật lý linh kiện bán dẫn,3,1,Chuyên ngành hướng 2,2
+69,Phân giải mạch,3,1,Chuyên ngành hướng 2,2
+70,Công nghệ chế tạo vật liệu ,3,1,Chuyên ngành hướng 2,2
+71,Khoa học vật liệu và ứng dụng ,3,0,Chuyên ngành hướng 2,2
+72,Cảm biến & đo lường ,3,0,Chuyên ngành hướng 2,2
+73,Hệ thống nhúng và IoT ,3,0,Chuyên ngành hướng 2,2
+74,Cấu trúc dữ liệu và giải thuật ,3,0,Chuyên ngành hướng 2,2
+75,Quang điện tử bán dẫn ,3,0,Chuyên ngành hướng 2,2
+76,Kỹ thuật phân tích vật liệu ,3,0,Chuyên ngành hướng 2,2
+77,Cấu trúc máy tính ,3,0,Chuyên ngành hướng 2 VLĐT,2
+78,Vật lý phóng xạ,4,1,Chuyên ngành hướng 1 VLHN,1
+79,Lý thuyết hạt nhân,4,1,Chuyên ngành hướng 1 VLHN,1
+80,Phương pháp và thiết bị ghi đo bức xạ hạt nhân,4,1,Chuyên ngành hướng 1 VLHN,1
+81,Phân tích thống kê số liệu thực nghiệm hạt nhân,4,1,Chuyên ngành hướng 1 VLHN,1
+82,An toàn và liều lượng,4,1,Chuyên ngành hướng 1 VLHN,1
+83,Ứng dụng tin học trong vật lý hạt nhân ,4,0,Chuyên ngành hướng 1 VLHN,1
+84,Thực tập cơ sở vật lý hạt nhân ,4,0,Chuyên ngành hướng 1 VLHN,1
+85,Các phương pháp phân tích hạt nhân ,4,0,Chuyên ngành hướng 1 VLHN,1
+86,Máy gia tốc ,4,0,Chuyên ngành hướng 1 VLHN,1
+87,Vật lý hạt nhân ứng dụng ,4,0,Chuyên ngành hướng 1 VLHN,1
+88,Vật lý neutron và lò phản ứng ,4,0,Chuyên ngành hướng 1 VLHN,1
+89,Phương pháp Địa vật lý giếng khoan,4,1,Chuyên ngành hướng 1 VLĐC,1
+90,Phương pháp thăm dò từ và trọng lực,4,1,Chuyên ngành hướng 1 VLĐC,1
+91,Phương pháp thăm dò địa chấn,4,1,Chuyên ngành hướng 1 VLĐC,1
+92,Thăm dò điện từ,4,1,Chuyên ngành hướng 1 VLĐC,1
+93,Phân tích dữ liệu Địa vật lý,4,1,Chuyên ngành hướng 1 VLĐC,1
+94,Quản lý dữ liệu Vật lý địa cầu trên GIS ,4,0,Chuyên ngành hướng 1 VLĐC,1
+95,Khoa học trái đất nâng cao ,4,0,Chuyên ngành hướng 1 VLĐC,1
+96,Lý thuyết tương đối ,4,1,Chuyên ngành hướng 1 VLLT,1
+97,Nhập môn Vật lý hệ nhiều hạt ,4,1,Chuyên ngành hướng 1 VLLT,1
+98,Các phương pháp gần đúng trong cơ lượng tử,4,1,Chuyên ngành hướng 1 VLLT,1
+99,Lý thuyết trường lượng tử,4,0,Chuyên ngành hướng 1 VLLT,1
+100,Lý thuyết hạt cơ bản ,4,0,Chuyên ngành hướng 1 VLLT,1
+101,Quang lượng tử,4,0,Chuyên ngành hướng 1 VLLT,1
+102,Quang bán dẫn ,4,0,Chuyên ngành hướng 1 VLLT,1
+103,Thiết kế mạch tích hợp,4,1,Chuyên ngành hướng 2 VLĐT,1
+104,Điều khiển thông minh,4,1,Chuyên ngành hướng 2 VLĐT,1
+105,Mạng nơ-ron,4,1,Chuyên ngành hướng 2 VLĐT,1
+106,Kỹ thuật điện tử ứng dụng,4,1,Chuyên ngành hướng 2 VLĐT,1
+107,Điện tử y - sinh,4,1,Chuyên ngành hướng 2 VLĐT,1
+108,Hệ vi cơ điện tử (MEMS) ,4,0,Chuyên ngành hướng 2 VLĐT,1
+109,Điện tử công suất ,4,0,Chuyên ngành hướng 2 VLĐT,1
+110,Thị giác máy tính ,4,0,Chuyên ngành hướng 2 VLĐT,1
+111,Đồ án chuyên đề ,4,0,Chuyên ngành hướng 2 VLĐT,1
+112,Hệ thống năng lượng tái tạo ,4,0,Chuyên ngành hướng 2 VLĐT,1
+113,Robot điện tử ,4,0,Chuyên ngành hướng 2 VLĐT,1
+114,Linh kiện vi điện tử tích hợp ,4,0,Chuyên ngành hướng 2 VLĐT,1
+115,Công nghệ chế tạo linh kiện bán dẫn,4,1,Chuyên ngành hướng 2 VLCR,1
+116,Tính chất đặc trưng vật liệu,4,1,Chuyên ngành hướng 2 VLCR,1
+117,Thực tập chuyên ngành ,4,1,Chuyên ngành hướng 2 VLCR,1
+118,Tính chất quang của vật rắn ,4,0,Chuyên ngành hướng 2 VLCR,1
+119,Kỹ thuật nuôi tinh thể ,4,0,Chuyên ngành hướng 2 VLCR,1
+120,Vật liệu thông minh và ứng dụng ,4,0,Chuyên ngành hướng 2 VLCR,1
+121,Ứng dụng máy tính trong chuyên ngành  ,4,0,Chuyên ngành hướng 2 VLCR,1
+122,Kỹ thuật chế tạo vật liệu nano ,4,0,Chuyên ngành hướng 2 VLCR,1
+123,Kỹ thuật siêu âm,4,0,Chuyên ngành hướng 2 VLCR,1
+124,Kỹ thuật phân tích chuyên ngành ,4,0,Chuyên ngành hướng 2 VLCR,1
+125,Cơ sở dữ liệu,4,1,Chuyên ngành hướng 2 VLTH,1
+126,Thị giác máy tính ,4,0,Chuyên ngành hướng 2 VLTH,1
+127,Mạng máy tính ,4,0,Chuyên ngành hướng 2 VLTH,1
+128,Thiết kế vi mạch ,4,0,Chuyên ngành hướng 2 VLTH,1
+129,Phát triển ứng dụng web ,4,0,Chuyên ngành hướng 2 VLTH,1
+130,Lập trình trên thiết bị di động ,4,0,Chuyên ngành hướng 2 VLTH,1
+131,Lập trình PLC ,4,0,Chuyên ngành hướng 2 VLTH,1
+132,Xử lý ảnh số ,4,0,Chuyên ngành hướng 2 VLTH,1
+133,Trí tuệ nhân tạo ,4,0,Chuyên ngành hướng 2 VLTH,1
+134,Lập trình Java ,4,0,Chuyên ngành hướng 2 VLTH,1
+135,Kiểm thử phần mềm ,4,0,Chuyên ngành hướng 2 VLTH,1
+136,Chuyên đề mới,4,0,Chuyên ngành hướng 2 VLTH,1
+137,Vật lý laser và quang tử học,4,1,Chuyên ngành hướng 2 VLUD,1
+138,Vật lý chân không và màng mỏng,4,1,Chuyên ngành hướng 2 VLUD,1
+139,Quang phi tuyến,4,1,Chuyên ngành hướng 2 VLUD,1
+140,Thực tập các ứng dụng laser,4,1,Chuyên ngành hướng 2 VLUD,1
+141,Thực tập phân tích quang phổ,4,1,Chuyên ngành hướng 2 VLUD,1
+142,Quang phổ và ứng dụng,4,1,Chuyên ngành hướng 2 VLUD,1
+143,Thực tập các ứng dụng của vật liệu nano,4,1,Chuyên ngành hướng 2 VLUD,1
+144,Thực tập thực tế ,4,0,Chuyên ngành hướng 2,2
+145,Khóa luận tốt nghiệp,4,1,Tốt nghiệp,2
