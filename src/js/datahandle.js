@@ -6,7 +6,7 @@ async function loadNodeLinks(){
         d.forEach(element => {
             ["id","YEAR","TERM"].forEach(k=>element[k]= +element[k]);
             element.REQUIRE = !!element.REQUIRE;
-            element._step = element.Year+element.TERM/2;
+            element._step = element.YEAR+element.TERM/2;
         });
         return d;
     });
@@ -23,9 +23,9 @@ async function loadNodeLinks(){
 const mainxKEY = "YEAR";
 const subxKEY = "TERM";
 function createForce({nodes,links},{width,height},ticked){
-    const rangeMain = d3.extend(nodes,d=>d[mainxKEY]);
+    const rangeMain = d3.extent(nodes,d=>d[mainxKEY]);
     let xScaleBand = d3.scaleBand([0,width]).domain(d3.range(rangeMain[0],rangeMain[1])).paddingInner(0.35);;
-    const rangeSub = d3.extend(nodes,d=>d[subxKEY]);
+    const rangeSub = d3.extent(nodes,d=>d[subxKEY]);
     const xWidth = xScaleBand.bandwidth();
     const xScaleinnerBand = d3.scaleBand([0,xWidth]).domain(d3.range(rangeSub[0],rangeSub[1])).paddingInner(0.35);
     const xWidthinner = xScaleinnerBand.bandwidth;
