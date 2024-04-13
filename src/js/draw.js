@@ -14,10 +14,11 @@ const draw= function({width,height,margin}) {
     let eNode = gNode.selectAll('g.node');
     let gLink = g.select('.holderLink');
     let eLink = gLink.selectAll('path.link');
+    let gGrid = g.select('g.grid');
     let simulation = d3.forceSimulation();
     let nodes=[];
     let links=[];
-    let store = {yHeightinner:32,ymingap:5,_nodes:[],_links:[]};
+    let store = {yHeightinner:48,ymingap:5,gap:0.2,_nodes:[],_links:[]};
     const linkDifFunc = d3.linkHorizontal()
     .source(d=>[d.source.x+store.xWidthinner/2,d.source.y])
     .target(d=>[d.target.x-store.xWidthinner/2,d.target.y])
@@ -48,7 +49,7 @@ const draw= function({width,height,margin}) {
             return d;
         }
     };
-    let colorByCat = d3.scaleOrdinal(d3.schemeObservable10)
+    let colorByCat = d3.scaleOrdinal(d3.schemePaired)
     master.graph = (graph) =>{
         return (arguments.length)?(nodes=graph.nodes,links=graph.links,master):{nodes,link};
     }
@@ -84,9 +85,17 @@ const draw= function({width,height,margin}) {
     }
     master.draw = ()=>{
         updateStore();
-        const {_links,xWidthinner,yHeightinner} = store;
+        const {_links,xWidthinner,xScaleBand,xWidth,yHeightinner,layer,gap} = store;
+        gGrid.selectAll('rect.bound').data(layer)
+            .join('rect')
+            .attr('class','bound')
+            .attr('width',xWidth*(1+gap*2))
+            .attr('height',height*2+yHeightinner*(0.5+gap)*2)
+            .attr('x',d=>xScaleBand(d)-xWidthinner/2-gap*xWidth)
+            .attr('y',-height-yHeightinner*(0.5+gap))
+            .attr('fill','#eee');
         eNode = gNode.selectAll('g.node')
-            .data(nodes)
+            .data(nodes,n=>n.id)
             .join(enter =>{
                 const eNode =enter.append("g").attr("class", "node");
                 eNode.append('rect')
@@ -96,15 +105,22 @@ const draw= function({width,height,margin}) {
                 .attr('y',-yHeightinner/2)
                 .attr('rx',5)
                 .attr('fill',d=>colorByCat(d[colorKEY]))
-                .attr('opacity',0.8)
+                .attr('opacity',0.6)
                 ;
-                eNode.append('text')
-                .text(d=>d.id)
+                const textO = eNode.append('foreignObject')
+                .attr('x',-xWidthinner/2)
+                .attr('y',-yHeightinner/2)
+                .attr('width',xWidthinner)
+                .attr('height',yHeightinner)
+                .style('overflow','hidden');
+                textO
+                .append('xhtml:div')
+                .attr('class','textCat text-center h-full')
+                .attr('title',s=>s.NAME)
+                .append('xhtml:p')
+                .attr('class','leading-5 align-middle line-clamp-2')
+                    .html(d=>d.NAME);
                 return eNode
-            },
-            update =>{ 
-                update.attr("transform", 'translate()');
-                return update;
             });
         eLink = gLink.selectAll('path.link')
             .data(_links)
@@ -112,14 +128,32 @@ const draw= function({width,height,margin}) {
             .attr('class','link')
             .attr('fill','none')
             .attr('display',d=>d.lchild?'none':undefined)
-            .attr("stroke",d=>d.isSameLevel?"#bbb":d.isVirtual?"red":"#ddd")
+            .attr("stroke",d=>d.isSameLevel?"#aaa":"#bbb")
             .attr("stroke-width", d=>d.isSameLevel?2:1.5)
             .on("mouseover",(e,l)=>console.log(l));
+
+            master.drawLegend();
         return master;
+    }
+    master.drawLegend = ()=>{
+        let legenG = d3.select('.legend.cat');
+        const lh = legenG.selectAll('div.h')
+        .data(colorByCat.domain())
+        .join('div')
+        .attr('class','h flex p-1');
+        lh.append('div')
+            .attr('class','colorbox h-4 w-6')
+            .style('background-color',d=>colorByCat(d));
+        lh.append('p')
+            .attr('class','textcolorbox h-4 leading-3 ml-1 mr-1')
+            .html(d=>d);
+
+
     }
     updateStore = ()=>{
         store.rangeMain = d3.extent(nodes,d=>d[mainxKEY]);
-        store.xScaleBand = d3.scaleBand([0,widthInner]).domain(d3.range(store.rangeMain[0],store.rangeMain[1]+1)).paddingInner(0.35);;
+        store.layer = d3.range(store.rangeMain[0],store.rangeMain[1]+1);
+        store.xScaleBand = d3.scaleBand([0,widthInner]).domain(store.layer).paddingInner(0.35);;
         store.rangeSub = d3.extent(nodes,d=>d[subxKEY]);
         store.xWidth = store.xScaleBand.bandwidth();
         store.xScaleinnerBand = d3.scaleBand([0,store.xWidth]).domain(d3.range(store.rangeSub[0],store.rangeSub[1]+1)).paddingInner(0.35);
@@ -190,20 +224,38 @@ const draw= function({width,height,margin}) {
         return master;
     }
     master.fixNodePos = ()=>{
-        const {yHeightinner,ymingap,xScaleBand,xScaleinnerBand,_nodes,_links} = store;
+        const {yHeightinner,ymingap,xScaleBand,xScaleinnerBand,_nodes,layer,gap} = store;
         const groupByLayer = d3.groups(_nodes,d=>d._step);
+        const maxHL=[];
         // arrange y pos
         groupByLayer.forEach(([k,g])=>{
             g.sort((a,b)=>a.y-b.y);
             const maxmem = g.length;
             let maxH = yHeightinner*maxmem + ymingap*(maxmem-1);
             let posy= (heightInner-maxH)/2;
+            const lmax = {step:k,y0:Infinity,y1:-Infinity}
+            maxHL.push(lmax);
             g.forEach(d=>{
                 d.x = xScaleBand(d[mainxKEY])+xScaleinnerBand(d[subxKEY]);
                 d.y = posy;
+                if (!d.isVirtual){
+                    lmax.y0 = Math.min(lmax.y0,d.y);
+                    lmax.y1 = Math.max(lmax.y1,d.y);
+                }
                 posy+= yHeightinner+ymingap;
             })
         });
+
+        const groupByMainLayer = d3.rollup(maxHL,d=>{
+            const y0=d3.min(d,de=>de.y0),y1=d3.max(d,de=>de.y1);
+            const h = y1-y0;
+            return {y0,y1,h}
+        }
+        ,d=>Math.floor(d.step));
+        gGrid.selectAll('rect.bound')
+        .attr('height',d=>(groupByMainLayer.get(d).h)+yHeightinner*(0.5+gap)*2)
+        .attr('y',d=>groupByMainLayer.get(d).y0-yHeightinner*(0.5+gap));
+
         eNode.attr("transform",d=>`translate(${d.x},${d.y})`);
         gLink.style("display",undefined);
         eLink.attr("d",linkFunc);
