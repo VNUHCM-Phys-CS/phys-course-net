@@ -2,6 +2,7 @@ const draw= function({width,height,margin}) {
     const mainxKEY = "YEAR";
     const subxKEY = "TERM";
     const colorKEY = "CATEGORY";
+    const strokeKEY = "REQUIRE";
     const master = {};
     let widthInner = width-margin.left-margin.right;
     let heightInner = height-margin.top-margin.bottom;
@@ -93,7 +94,7 @@ const draw= function({width,height,margin}) {
             .attr('height',height*2+yHeightinner*(0.5+gap)*2)
             .attr('x',d=>xScaleBand(d)-xWidthinner/2-gap*xWidth)
             .attr('y',-height-yHeightinner*(0.5+gap))
-            .attr('fill','#eee');
+            .attr('fill','#e1e1e1');
         eNode = gNode.selectAll('g.node')
             .data(nodes,n=>n.id)
             .join(enter =>{
@@ -106,6 +107,9 @@ const draw= function({width,height,margin}) {
                 .attr('rx',5)
                 .attr('fill',d=>colorByCat(d[colorKEY]))
                 .attr('opacity',0.6)
+                .attr('stroke',d=> d[strokeKEY]!==1?'#222':'none')
+                .attr('stroke-width',d=>d[strokeKEY]!==1?2:undefined)
+                .attr('stroke-dasharray',d=>d[strokeKEY]===2?4:undefined)
                 ;
                 const textO = eNode.append('foreignObject')
                 .attr('x',-xWidthinner/2)
@@ -121,7 +125,13 @@ const draw= function({width,height,margin}) {
                 .attr('class','leading-5 align-middle line-clamp-2')
                     .html(d=>d.NAME);
                 return eNode
-            });
+            },update=>{
+                update.transition().attr("transform",d=>`translate(${d.x},${d.y})`);
+                return update;
+            }),remove=>{
+                remove.transition().attr('opacity',0).remove();
+                return remove;
+            };
         eLink = gLink.selectAll('path.link')
             .data(_links)
             .join('path')
@@ -136,7 +146,7 @@ const draw= function({width,height,margin}) {
         return master;
     }
     master.drawLegend = ()=>{
-        let legenG = d3.select('.legend.cat');
+        let legenG = d3.select('.legend .cat');
         const lh = legenG.selectAll('div.h')
         .data(colorByCat.domain())
         .join('div')
@@ -163,11 +173,6 @@ const draw= function({width,height,margin}) {
 
         // node and virtual node
         simulation.stop();
-        simulation.nodes(nodes)                 // Force algorithm is applied to data.nodes
-        .force("link", d3.forceLink()                               // This force provides links between nodes
-            .id(function(d) { return d.id; })                     // This provide  the id of a node
-            .links(links).strength(1)                                  // and this the list of links
-        );
 
         // Replace the input nodes and links with mutable objects for the simulation.
         store._nodes = [...nodes];
@@ -184,7 +189,7 @@ const draw= function({width,height,margin}) {
                 let _l = vnodes[`${lastitem.id}-${lastitem._step}`];
                 if (!_l){
                     const maink = Math.floor(i);
-                    const target = {id:idvirtual,_step:i,[mainxKEY]:maink,[subxKEY]:(i-maink)/xstep+1};
+                    const target = {id:idvirtual,_step:i,[mainxKEY]:maink,[subxKEY]:(i-maink)/xstep+1,[colorKEY]:l.target[colorKEY]};
                     store._nodes.push(target);
                     idvirtual--;
                     _l = {source:lastitem,target,isVirtual:true};
@@ -197,26 +202,34 @@ const draw= function({width,height,margin}) {
                     lastitem = _l.target;
                 }
             }
-            if (lastitem.id==4)
-                debugger
             if (lastitem!==l.source){
                 store._links.push({source:lastitem,target:l.target,isVirtual:true});
                 l.lchild = child;
             }
         })
+        store.groupByLayer = d3.groups(store._nodes,d=>d._step);
+        let maxE = 0;
+        store.groupByLayer.forEach(([k,g])=>{
+            maxE = Math.max(maxE,g.length);
+        })
+        store.groupByLayer.maxE = maxE;
     }
     master.forceInit = ()=>{
-        const {xScaleBand,xScaleinnerBand} = store;
-
+        const {xScaleBand,xScaleinnerBand,widthInner,groupByLayer,yHeightinner} = store;
+        const cat = colorByCat.domain();
+        const yorder = d3.scaleOrdinal().domain(cat).range(d3.range(0,cat.length));
+        
+        const yScale = d3.scaleLinear().domain([0,cat.length]).range([-groupByLayer.maxE*yHeightinner/2,groupByLayer.maxE*yHeightinner/2]);
         simulation.nodes(store._nodes)                 // Force algorithm is applied to data.nodes
-        .force("link", d3.forceLink().links(store._links).strength(0.1))                                  // and this the list of links)
-        .force("charge", d3.forceManyBody().strength(-200))         // This adds repulsion between nodes.Play with the -400 for the repulsion strength
-        .force("xPosition", d3.forceX(d=>xScaleBand(d[mainxKEY])+xScaleinnerBand(d[subxKEY])).strength(2))     // 
-        // .force("yPosition", d3.forceY(heightInner/2).strength(0.1) )    // This force attracts nodes to the center of Y
+        .force("link", d3.forceLink().links(store._links).strength(0.5))                                  // and this the list of links)
+        .force("charge", d3.forceManyBody().strength(-400))         // This adds repulsion between nodes.Play with the -400 for the repulsion strength
+        .force("xPosition", d3.forceX(d=>xScaleBand(d[mainxKEY])+xScaleinnerBand(d[subxKEY])).strength(1))     // 
+        .force("yPosition", d3.forceY(d=>yScale(yorder(d[colorKEY]))).strength(0.4))
+        .force("collide", d3.forceCollide().radius(d => widthInner + 1).iterations(2))
         .on("tick", master.updateNode)
         .on("end", master.fixNodePos);
         gLink.style("display",'hidden');
-        simulation.alpha(1).restart();
+        simulation.alpha(0.8).restart();
         return master;
     }
     master.updateNode = ()=>{

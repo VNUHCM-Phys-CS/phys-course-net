@@ -4,8 +4,7 @@ async function loadNodeLinks(){
     const nodes = await d3.csv("src/data/nodes.csv")
     .then(d=>{
         d.forEach(element => {
-            ["id","YEAR","TERM"].forEach(k=>element[k]= +element[k]);
-            element.REQUIRE = !!element.REQUIRE;
+            ["id","YEAR","TERM","REQUIRE"].forEach(k=>element[k]= +element[k]);
             element._step = element.YEAR+(element.TERM-1)/2;
         });
         return d;
@@ -20,7 +19,7 @@ async function loadNodeLinks(){
     d3.forceSimulation().nodes(nodes)                 // Force algorithm is applied to data.nodes
     .force("link", d3.forceLink()                               // This force provides links between nodes
         .id(function(d) { return d.id; })                     // This provide  the id of a node
-        .links(links).strength(0.1)                                  // and this the list of links
+        .links(links)                                 // and this the list of links
     ).stop();
     // check same level
     links.forEach(l=>{
