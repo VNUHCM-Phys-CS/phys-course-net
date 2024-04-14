@@ -90,11 +90,19 @@ const draw= function({width,height,margin}) {
         gGrid.selectAll('rect.bound').data(layer)
             .join('rect')
             .attr('class','bound')
+            .attr('id',d=>'areaYear'+d)
             .attr('width',xWidth*(1+gap*2))
             .attr('height',height*2+yHeightinner*(0.5+gap)*2)
             .attr('x',d=>xScaleBand(d)-xWidthinner/2-gap*xWidth)
             .attr('y',-height-yHeightinner*(0.5+gap))
             .attr('fill','#e1e1e1');
+        // connect with button
+        layer.forEach(d=>{
+            d3.select("#btnYear"+d)
+            .on("mouseover",(e,v)=>d3.select("#areaYear"+d).classed('blink',true))
+            .on("mouseleave",(e,v)=>d3.select("#areaYear"+d).classed('blink',false))
+        })
+
         eNode = gNode.selectAll('g.node')
             .data(nodes,n=>n.id)
             .join(enter =>{
@@ -132,6 +140,36 @@ const draw= function({width,height,margin}) {
                 remove.transition().attr('opacity',0).remove();
                 return remove;
             };
+        eNode.each(function(){
+            const e= d3.select(this);
+            e.datum()._el = e;
+        })
+        eNode.call(handleFreeze,
+            function(){
+            },
+            function(){
+                svg.classed('onHighlight',true);
+                const el = d3.select(this);
+                const v = el.datum();
+                el.classed('highlight',true);
+                //pre link
+                v._linkspre.forEach(l=>{
+                    retrive(l,'source','_linkspre');
+                })
+                v._linksnext.forEach(l=>{
+                    retrive(l,'target','_linksnext');
+                })
+                function retrive(l,key,keylink){
+                    if (l._el) l._el.classed('highlight',true);
+                    if (l[key]._el) l[key]._el.classed('highlight',true);
+                    l[key][keylink].forEach(l=>retrive(l,key,keylink));
+                }
+            },
+            function(){
+                svg.classed('onHighlight',false);
+                g.selectAll('.highlight').classed('highlight',false);
+            }
+        )
         eLink = gLink.selectAll('path.link')
             .data(_links)
             .join('path')
@@ -140,10 +178,36 @@ const draw= function({width,height,margin}) {
             .attr('display',d=>d.lchild?'none':undefined)
             .attr("stroke",d=>d.isSameLevel?"#aaa":"#bbb")
             .attr("stroke-width", d=>d.isSameLevel?2:1.5)
-            .on("mouseover",(e,l)=>console.log(l));
-
-            master.drawLegend();
+            // .on("mouseover",(e,l)=>console.log(l));
+        eLink.each(function(){
+            const e= d3.select(this);
+            e.datum()._el = e;
+        })
+        master.drawLegend();
         return master;
+    }
+    function handleFreeze(el,clickFunc,mouseoverFunc,mouseleaveFunc){
+        return el.on('click',function(e,v){
+            if (store.isFreeze){
+                store.isFreeze.mouseleaveFunc();
+            }
+            if (store.isFreeze.v===v)
+                    store.isFreeze = undefined;
+            else{
+                clickFunc.bind(this)();
+                store.isFreeze = {v,clickFunc:clickFunc.bind(this),mouseoverFunc:mouseoverFunc.bind(this),mouseleaveFunc:mouseleaveFunc.bind(this)}
+            }
+        })
+        .on('mouseover',function(e,v){
+            if (!store.isFreeze){
+                mouseoverFunc.bind(this)();
+            }
+        })
+        .on('mouseleave',function(e,v){
+            if (!store.isFreeze){
+                mouseleaveFunc.bind(this)();
+            }
+        })
     }
     master.drawLegend = ()=>{
         let legenG = d3.select('.legend .cat');
@@ -206,6 +270,12 @@ const draw= function({width,height,margin}) {
                 store._links.push({source:lastitem,target:l.target,isVirtual:true});
                 l.lchild = child;
             }
+        })
+        // add link to node
+        store._nodes.forEach(n=>{n._linkspre=[];n._linksnext=[];});
+        store._links.forEach(l=>{
+            l.source._linksnext.push(l);
+            l.target._linkspre.push(l);
         })
         store.groupByLayer = d3.groups(store._nodes,d=>d._step);
         let maxE = 0;
