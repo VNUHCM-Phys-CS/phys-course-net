@@ -15,7 +15,7 @@ const draw= function({width,height,margin}) {
     let simulation = d3.forceSimulation();
     let nodes=[];
     let links=[];
-    let store = {yHeightinner:48,ymingap:5,gap:0.2,_nodes:[],_links:[]};
+    let store = {yHeightinner:48,ymingap:5,gap:0.2,_nodes:[],_links:[],customCatLevel:{},countCat:new Map()};
     const linkDifFunc = d3.linkHorizontal()
     .source(d=>[d.source.x+store.xWidthinner/2,d.source.y])
     .target(d=>[d.target.x-store.xWidthinner/2,d.target.y])
@@ -80,7 +80,7 @@ const draw= function({width,height,margin}) {
         Object.assign(svg.call(zoom).node(), {reset});
         return master
     }
-    master.initFilter = (onChangedata)=>{
+    master.initFilter = (onChangedata,state)=>{
         // connect with button
         [1,2,3,4].forEach(d=>{
             const holder = d3.select("#btnYear"+d)
@@ -103,6 +103,29 @@ const draw= function({width,height,margin}) {
                     onChangedata({name:'REMOVE',layer:d});
                 }
             })
+        })
+        const specialTitle = d3.select("#specialTitle").select('.detail');
+        d3.select('#btnYearG3').selectAll(".dropdown-item").on('click',function(e,v){
+            const value = d3.select(this).attr('value');
+            if (value==='all'){
+                onChangedata({name:'SELECT',cat:[]});
+                specialTitle.text("");
+            }else{
+                const v3 = store.customCatLevel.find(d=>d.key===value);
+                onChangedata({name:'SELECT',cat:[null,null,[value],v3.value??[]]});
+                specialTitle.text(value);
+            }
+        })
+        d3.select('#btnYearG4').selectAll(".dropdown-item").on('click',function(e,v){
+            const value = d3.select(this).attr('value');
+            if (value==='all'){
+                onChangedata({name:'SELECT',cat:[]});
+                specialTitle.text("");
+            }else{
+                const parent = store.customCatLevel.find(d=>d.value.find(e=>e===value));
+                onChangedata({name:'SELECT',cat:[null,null,[parent.key],[value]]});
+                specialTitle.text(value);
+            }
         })
         return master;
     }
@@ -251,26 +274,40 @@ const draw= function({width,height,margin}) {
         colorByCat.domain(cat);
         return master
     }
-    master.drawLegend = ()=>{
+    master.setCustomCat = (customlevel)=>{
+        store.customCatLevel = customlevel;
+        return master
+    }
+    master.drawLegend = (customcat)=>{
+        const {customCatLevel,countCat} = store;
         let legenG = d3.select('.legend .cat');
-        const lh = legenG.selectAll('div.h')
-        .data(store.cat,d=>d)
-        .join(enter=>{
-            const g = enter.append('div').attr('class','h flex p-1');
-            g.append('div')
-            .attr('class','colorbox h-4 w-6')
-            .style('background-color',d=>colorByCat(d));
-            g.append('p')
-            .attr('class','textcolorbox h-4 leading-3 ml-1 mr-1')
-            .html(d=>d);
-            return g;
-        },update=>{
-            update.select('div')
-            .style('background-color',d=>colorByCat(d));
-            update.select('p')
-            .html(d=>d);
-            return update;
-        });
+        const lh = legenG.selectAll('div.hg')
+        .data(customCatLevel,d=>d.key)
+        .join('div')
+        .attr('class','hg')
+        .each(function(d){createLegendItem(d3.select(this),[{l:d.key,o:0},...d.value.map(d=>({l:d,o:1}))])});
+
+        function createLegendItem (legenG,data) {
+            legenG.selectAll('div.h')
+            .data(data)
+            .join(enter=>{
+                const g = enter.append('div').attr('class',d=>`h flex p-1 ${d.o?'ml-3':''} ${countCat.get(d.l)?"":"hidden"}`);
+                g.append('div')
+                .attr('class','colorbox h-4 w-6')
+                .style('background-color',d=>colorByCat(d.l));
+                g.append('p')
+                .attr('class','textcolorbox h-4 leading-3 ml-1 mr-1')
+                .html(d=>`${d.l} (${countCat.get(d.l)??0})`);
+                return g;
+            },update=>{
+                update.attr('class',d=>`h flex p-1 ${d.o?'ml-3':''} ${countCat.get(d.l)?"":"hidden"}`);
+                update.select('div')
+                .style('background-color',d=>colorByCat(d.l));
+                update.select('p')
+                .html(d=>`${d.l} (${countCat.get(d.l)??0})`);
+                return update;
+            });
+        }
 
     }
     updateStore = ()=>{
@@ -281,7 +318,8 @@ const draw= function({width,height,margin}) {
         store.xWidth = store.xScaleBand.bandwidth();
         store.xScaleinnerBand = d3.scaleBand([0,store.xWidth]).domain(d3.range(store.rangeSub[0],store.rangeSub[1]+1)).paddingInner(0.35);
         store.xWidthinner = store.xScaleinnerBand.bandwidth();
-        store.cat = _.uniq(nodes.map(d=>d[colorKEY]));
+        store.countCat = d3.rollup(nodes,d=>d.length,d=>d[colorKEY]);
+        store.cat = [...store.countCat.keys()];
         // colorByCat.domain(store.cat);
 
         // node and virtual node

@@ -4,11 +4,13 @@
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Phys-HCMUS-VNU</title>
+    <link rel="shortcut icon" type="image/png" href="src/image/vi_phys_small.png" />
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel='stylesheet' type='text/css' media='screen' href='src/style/bootstrap.min.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='src/style/main.css'>
     <script src='src/js/lodash.min.js'></script>
+    <script src='src/js/html2canvas.min.js'></script>
     <script src='src/js/d3@7.js'></script>
     <script src='src/js/boostrap.min.js' defer></script>
     <script src='src/js/datahandle.js' defer></script>
@@ -17,7 +19,7 @@
 </head>
 <body>
     <div class="h-dvh w-screen flex flex-col p-4">
-        <div class="container mx-auto flex-none z-1">
+        <div class="container mx-auto flex-none z-1 d-print-none">
             <div id="menu" class="flex items-center w-full h-12 rounded-md bg-slate-200 p-2">
                 <div class="flex flex-1">
                     <div class="basis-1/4">
@@ -30,9 +32,9 @@
                                     </label>
                                 </form>
                             </button>
-                            <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                            <!-- <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
+                            </button> -->
                         </div>
                     </div>
                     <div class="basis-1/4">
@@ -45,9 +47,9 @@
                                     </label>
                                 </form>
                             </button>
-                            <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                            <!-- <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
+                            </button> -->
                         </div>
                     </div>
                     <div class="basis-1/4">
@@ -63,6 +65,12 @@
                             <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="visually-hidden">Toggle Dropdown</span>
                             </button>
+                            <ul class="dropdown-menu d-print-none">
+                                <li class="dropdown-item" value="Chuyên ngành hướng 1">Chuyên ngành hướng 1</li>
+                                <li class="dropdown-item" value="Chuyên ngành hướng 2">Chuyên ngành hướng 2</li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li class="dropdown-item" value="all">Tất cả</li>
+                            </ul>
                         </div>
                     </div>
                     <div class="basis-1/4">
@@ -78,10 +86,26 @@
                             <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="visually-hidden">Toggle Dropdown</span>
                             </button>
+                            <ul class="dropdown-menu d-print-none">
+                                <li class="dropdown-item" value="Chuyên ngành hướng 1 VLHN">[1-VLHN] Vật Lý Hạt Nhân</li>
+                                <li class="dropdown-item" value="Chuyên ngành hướng 1 VLĐC">[1-VLĐC] Vật Lý Địa Cầu</li>
+                                <li class="dropdown-item" value="Chuyên ngành hướng 1 VLLT">[1-VLLT] Vật Lý Lý Thuyết</li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li class="dropdown-item" value="Chuyên ngành hướng 2 VLCR">[2-VLCR] Vật Lý Chất Rắn</li>
+                                <li class="dropdown-item" value="Chuyên ngành hướng 2 VLTH">[2-VLTH] Vật Lý Tin Học</li>
+                                <li class="dropdown-item" value="Chuyên ngành hướng 2 VLĐT">[2-VLĐT] Vật Lý Điện Tử</li>
+                                <li class="dropdown-item" value="Chuyên ngành hướng 2 VLUD">[2-VLUD] Vật Lý Ứng Dụng</li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li class="dropdown-item" value="all">Tất cả</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
                 <div class="flex-none">
+                    <div class="button">
+                        <div class="button" id="imagedownload">Download button</div>
+                        <a id="download" href="#" class="pointer-events-none hidden"></a>
+                    </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle-fill" viewBox="0 0 16 16">
                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"/>
                       </svg>
@@ -103,6 +127,10 @@
                 <div class="rounded-md m-1 p-1 bg-slate-300 border-2 border-slate-500 border-dotted">Không tính GPA</div>
             </div>
             <div class="cat p-2"></div>
+        </div>
+        <div class="absolute left-12 top-24" id="specialTitle">
+            <p class="h4">VẬT LÝ HỌC</h1>
+            <p class="h2 detail"></h1>
         </div>
     </div>
 </body>
