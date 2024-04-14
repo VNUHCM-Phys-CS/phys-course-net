@@ -73,7 +73,7 @@ const draw= function({width,height,margin}) {
         function reset() {
             svg.transition()
                 .duration(750)
-                .call(zoom.transform, d3.zoomIdentity);
+                .call(zoom.transform, d3.zoomIdentity.translate(margin.left, margin.top).scale(1));
         }
     
         // prevent scrolling then apply the default filter
@@ -83,6 +83,32 @@ const draw= function({width,height,margin}) {
         }
         Object.assign(svg.call(zoom).node(), {reset});
         return master
+    }
+    master.initFilter = (onChangedata)=>{
+        // connect with button
+        [1,2,3,4].forEach(d=>{
+            const holder = d3.select("#btnYear"+d)
+            .on("mouseover",(e,v)=>d3.select("#areaYear"+d).classed('blink',true))
+            .on("mouseleave",(e,v)=>d3.select("#areaYear"+d).classed('blink',false));
+            const dropdownbtn = d3.select(`#btnYearG${d} .dropdown-toggle`);
+            const checkbox = holder.select('.form-check-input');
+            checkbox.on('change',(e)=>{
+                if (e.target.checked){
+                    holder.classed("btn-info",true);
+                    holder.classed("btn-secondary",false);
+                    dropdownbtn.classed("btn-info",true);
+                    dropdownbtn.classed("btn-secondary",false);
+                    onChangedata({name:'ADD',layer:d});
+                }else {
+                    holder.classed("btn-info",false);
+                    holder.classed("btn-secondary",true);
+                    dropdownbtn.classed("btn-info",false);
+                    dropdownbtn.classed("btn-secondary",true);
+                    onChangedata({name:'REMOVE',layer:d});
+                }
+            })
+        })
+        return master;
     }
     master.draw = ()=>{
         updateStore();
@@ -96,12 +122,6 @@ const draw= function({width,height,margin}) {
             .attr('x',d=>xScaleBand(d)-xWidthinner/2-gap*xWidth)
             .attr('y',-height-yHeightinner*(0.5+gap))
             .attr('fill','#e1e1e1');
-        // connect with button
-        layer.forEach(d=>{
-            d3.select("#btnYear"+d)
-            .on("mouseover",(e,v)=>d3.select("#areaYear"+d).classed('blink',true))
-            .on("mouseleave",(e,v)=>d3.select("#areaYear"+d).classed('blink',false))
-        })
 
         eNode = gNode.selectAll('g.node')
             .data(nodes,n=>n.id)
@@ -115,8 +135,8 @@ const draw= function({width,height,margin}) {
                 .attr('rx',5)
                 .attr('fill',d=>colorByCat(d[colorKEY]))
                 .attr('opacity',0.6)
-                .attr('stroke',d=> d[strokeKEY]!==1?'#222':'none')
-                .attr('stroke-width',d=>d[strokeKEY]!==1?2:undefined)
+                .attr('stroke',d=> d[strokeKEY]?'#222':'none')
+                .attr('stroke-width',d=>d[strokeKEY]?2:undefined)
                 .attr('stroke-dasharray',d=>d[strokeKEY]===2?4:undefined)
                 ;
                 const textO = eNode.append('foreignObject')
@@ -135,6 +155,25 @@ const draw= function({width,height,margin}) {
                 return eNode
             },update=>{
                 update.transition().attr("transform",d=>`translate(${d.x},${d.y})`);
+                update.select('rect') .attr('width',xWidthinner)
+                .attr('height',yHeightinner)
+                .attr('x',-xWidthinner/2)
+                .attr('y',-yHeightinner/2)
+                .attr('fill',d=>colorByCat(d[colorKEY]))
+                .attr('stroke',d=> d[strokeKEY]?'#222':'none')
+                .attr('stroke-width',d=>d[strokeKEY]?2:undefined)
+                .attr('stroke-dasharray',d=>d[strokeKEY]===2?4:undefined)
+                ;
+                const textO = update.select('foreignObject')
+                .attr('x',-xWidthinner/2)
+                .attr('y',-yHeightinner/2)
+                .attr('width',xWidthinner)
+                .attr('height',yHeightinner);
+                textO
+                .select('div')
+                .attr('title',s=>s.NAME)
+                .select('p')
+                    .html(d=>d.NAME);
                 return update;
             }),remove=>{
                 remove.transition().attr('opacity',0).remove();
@@ -190,8 +229,10 @@ const draw= function({width,height,margin}) {
         return el.on('click',function(e,v){
             if (store.isFreeze){
                 store.isFreeze.mouseleaveFunc();
+                store.isFreeze = undefined;
+                return
             }
-            if (store.isFreeze.v===v)
+            if (store.isFreeze&&(store.isFreeze.v===v))
                     store.isFreeze = undefined;
             else{
                 clickFunc.bind(this)();
@@ -212,16 +253,23 @@ const draw= function({width,height,margin}) {
     master.drawLegend = ()=>{
         let legenG = d3.select('.legend .cat');
         const lh = legenG.selectAll('div.h')
-        .data(colorByCat.domain())
-        .join('div')
-        .attr('class','h flex p-1');
-        lh.append('div')
+        .data(colorByCat.domain(),d=>d)
+        .join(enter=>{
+            const g = enter.append('div').attr('class','h flex p-1');
+            g.append('div')
             .attr('class','colorbox h-4 w-6')
             .style('background-color',d=>colorByCat(d));
-        lh.append('p')
+            g.append('p')
             .attr('class','textcolorbox h-4 leading-3 ml-1 mr-1')
             .html(d=>d);
-
+            return g;
+        },update=>{
+            update.select('div')
+            .style('background-color',d=>colorByCat(d));
+            update.select('p')
+            .html(d=>d);
+            return update;
+        });
 
     }
     updateStore = ()=>{
