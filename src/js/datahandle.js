@@ -9,7 +9,7 @@ async function loadNodeLinks(){
         });
         return d;
     });
-    const links = await d3.csv("src/data/links.csv")
+    let links = await d3.csv("src/data/links.csv")
     .then(d=>{
         d.forEach(element => {
             ["source","target"].forEach(k=>element[k]= +element[k]);
@@ -26,5 +26,7 @@ async function loadNodeLinks(){
         if(l.source._step===l.target._step)
             l.isSameLevel = true;
     })
+    // Update 4/22: remove same level
+    links = links.filter(d=>!d.isSameLevel);
     return {nodes,links}
 }
