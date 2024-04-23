@@ -128,10 +128,10 @@ const draw = function ({ width, height, margin }) {
     [1, 2, 3, 4].forEach((d) => {
       const holder = d3
         .select("#btnYear" + d)
-        .on("mouseover", (e, v) =>
+        .on("mouseover touchstart", (e, v) =>
           d3.select("#areaYear" + d).classed("blink", true)
         )
-        .on("mouseleave", (e, v) =>
+        .on("mouseleave touchend", (e, v) =>
           d3.select("#areaYear" + d).classed("blink", false)
         );
       const dropdownbtn = d3.select(`#btnYearG${d} .dropdown-toggle`);
@@ -391,12 +391,12 @@ const draw = function ({ width, height, margin }) {
           };
         }
       })
-      .on("mouseover", function (e, v) {
+      .on("mouseover touchstart", function (e, v) {
         if (!store.isFreeze) {
           mouseoverFunc.bind(this)();
         }
       })
-      .on("mouseleave", function (e, v) {
+      .on("mouseleave touchend", function (e, v) {
         if (!store.isFreeze) {
           mouseleaveFunc.bind(this)();
         }
