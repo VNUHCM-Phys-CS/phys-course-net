@@ -9,8 +9,21 @@ const strokeKEY = "REQUIRE";
 const groupCat = [
     {key:"Đại cương",value:[]},
     {key:"Cơ sở ngành",value:[]},
-    {key:"Chuyên ngành hướng 1",value:["Chuyên ngành hướng 1 VLHN","Chuyên ngành hướng 1 VLĐC","Chuyên ngành hướng 1 VLLT"]},
-    {key:"Chuyên ngành hướng 2",value:["Chuyên ngành hướng 2 VLCR","Chuyên ngành hướng 2 VLTH","Chuyên ngành hướng 2 VLĐT","Chuyên ngành hướng 2 VLUD"]},
+    {key:"Chuyên ngành hướng 1",value:["Chuyên ngành hướng 1 VLHN","Chuyên ngành hướng 1 VLĐC","Chuyên ngành hướng 1 VLLT","Tốt nghiệp"]},
+    {key:"Chuyên ngành hướng 2",value:["Chuyên ngành hướng 2 VLCR","Chuyên ngành hướng 2 VLTH","Chuyên ngành hướng 2 VLĐT","Chuyên ngành hướng 2 VLUD","Tốt nghiệp"]},
+]
+
+const filterG = [
+    {key:"filtergy3",y:3,v:[{v:"Chuyên ngành hướng 1",l:"CN hướng 1"},{v:"Chuyên ngành hướng 2",l:"CN hướng 2"}]},
+    {key:"filtergy4",y:4,v:[
+        {v:"Chuyên ngành hướng 1 VLHN",l:"[1-VLHN] Vật Lý Hạt Nhân"},
+        {v:"Chuyên ngành hướng 1 VLĐC",l:"[1-VLĐC] Vật Lý Địa Cầu"},
+        {v:"Chuyên ngành hướng 1 VLLT",l:"[1-VLLT] Vật Lý Lý Thuyết"},
+        {v:"Chuyên ngành hướng 2 VLCR",l:"[2-VLCR] Vật Lý Chất Rắn"},
+        {v:"Chuyên ngành hướng 2 VLTH",l:"[2-VLTH] Vật Lý Tin Học"},
+        {v:"Chuyên ngành hướng 2 VLĐT",l:"[2-VLĐT] Vật Lý Điện Tử"},
+        {v:"Chuyên ngành hướng 2 VLUD",l:"[2-VLUD] Vật Lý Ứng Dụng"},
+    ]},
 ]
 // init
 const drawFunc = draw({width,height,margin});
@@ -77,3 +90,10 @@ d3.select("#imagedownload").on("click", function(event){
         downloadFunc(canvas,"Phys_course");
     });
 });
+
+const modalfilter = document.getElementById('modalfilter')
+const btnfilter = document.getElementById('btnfilter')
+
+modalfilter.addEventListener('shown.bs.modal', () => {
+    btnfilter.focus()
+})

@@ -54,3 +54,22 @@ svg.onHighlight {
 .collapse.show {
     visibility: unset;
 }
+
+.btn{
+    &[aria-expanded="true"]{
+        .toggleicon{
+            display: block;
+        }
+        .showicon{
+            display: none;
+        }
+    }
+    &[aria-expanded="false"]{
+        .toggleicon{
+            display: none;
+        }
+        .showicon{
+            display: block;
+        }
+    }
+}

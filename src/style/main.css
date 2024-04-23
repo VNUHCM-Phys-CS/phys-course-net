@@ -44,4 +44,17 @@ svg.onHighlight .node.highlight {
 }
 .collapse.show {
   visibility: unset;
+}
+
+.btn[aria-expanded=true] .toggleicon {
+  display: block;
+}
+.btn[aria-expanded=true] .showicon {
+  display: none;
+}
+.btn[aria-expanded=false] .toggleicon {
+  display: none;
+}
+.btn[aria-expanded=false] .showicon {
+  display: block;
 }/*# sourceMappingURL=main.css.map */

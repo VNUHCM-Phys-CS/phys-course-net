@@ -46,7 +46,7 @@
                             </button>
                         </div>
                     </div> -->
-                    <div class="basis-1/4">
+                    <!-- <div class="basis-1/4">
                         <div class="btn-group" id="btnYearG3">
                             <button  class="btn btn-info" id="btnYear3" type="button">
                                 <form class="form-check">
@@ -93,15 +93,40 @@
                                 <li class="dropdown-item" value="all">Tất cả</li>
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="flex-none">
-                    <div class="flex items-center">
-                        <button class="btn btn-primary mr-2" type="button" data-bs-toggle="collapse" data-bs-target="#legendHolder" aria-expanded="false" aria-controls="collapseExample">
+                    <div class="flex items-center gap-1">
+                        <button id="btnfilter" class="btn btn-primary flex items-center gap-1" type="button" data-bs-toggle="modal" data-bs-target="#modalfilter">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                                </svg>
+                            </div>
                             Bộ lọc
                         </button>
-                        <div class="button btn btn-primary mr-2">
-                            <div class="button" id="imagedownload">Tải xuống</div>
+                        <button class="btn btn-primary flex items-center gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#legendHolder" aria-expanded="true" aria-controls="collapseExample">
+                            <div>
+                                <svg class="toggleicon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                                </svg>
+                                <svg class="showicon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash-fill" viewBox="0 0 16 16">
+                                    <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z"/>
+                                    <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z"/>
+                                </svg>
+                            </div>
+                            Chú thích
+                        </button>
+                        <div class="button btn btn-primary">
+                            <div class="button flex items-center gap-1" id="imagedownload">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+                                      </svg>
+                                </div>
+                                Tải xuống</div>
                             <a id="download" href="#" class="pointer-events-none hidden"></a>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle-fill" viewBox="0 0 16 16">
@@ -119,17 +144,47 @@
                 <g class="holderNode"></g>
             </g>
         </svg>
-        <div id="legendHolder" class="collapse show legend flex flex-wrap fixed bottom-1 right-1 max-w-screen-sm max-h-1/2 bg-slate-50/75 p-0.5 rounded-md border-slate-500 border-solid border-t-2 border-l-2">
-            <div class="require p-1 mr-4">
-                <div class="rounded-md m-1 p-1 bg-slate-300 border-2 border-slate-500 border-solid">Bắt buộc</div>
-                <div class="rounded-md m-1 p-1 bg-slate-300">Tự chọn</div>
-                <div class="rounded-md m-1 p-1 bg-slate-300 border-2 border-slate-500 border-dotted">Không tính GPA</div>
+        <div id="legendHolder" class="collapse show legend flex flex-warp fixed bottom-1 right-1 max-w-screen-sm max-h-1/2 bg-slate-50/75 p-0.5 rounded-md border-slate-500 border-solid border-t-2 border-l-2">
+            <div class="require p-1 mr-4 flex-none">
+                <div class="small rounded-md m-1 p-1 bg-slate-300 border-2 border-slate-500 border-solid">Bắt buộc</div>
+                <div class="small rounded-md m-1 p-1 bg-slate-300">Tự chọn</div>
+                <div class="small rounded-md m-1 p-1 bg-slate-300 border-2 border-slate-500 border-dotted">Không tính GPA</div>
             </div>
-            <div class="cat p-1"></div>
+            <div class="cat p-1 grow"></div>
         </div>
         <div class="absolute left-12 top-24" id="specialTitle">
             <p class="h4">VẬT LÝ HỌC</h1>
             <p class="h2 detail"></h1>
+        </div>
+        <div id="modalfilter" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Bộ lọc</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-print-none">
+                    <h4 class="h5">Lọc theo hướng chuyên ngành</h4>
+                    <div id="filtergy3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Chuyên ngành hướng 1" data-filter-y="3">
+                            <label class="form-check-label">
+                                Chuyên ngành hướng 1
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Chuyên ngành hướng 2" data-filter-y="3">
+                            <label class="form-check-label">
+                                Chuyên ngành hướng 2
+                            </label>
+                        </div>
+                    </div>
+                    <hr class="mt-1 mb-2">
+                    <h4 class="h5">Lọc theo chuyên ngành</h4>
+
+                </div>
+              </div>
+            </div>
         </div>
     </div>
 </body>

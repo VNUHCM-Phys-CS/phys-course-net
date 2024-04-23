@@ -153,7 +153,7 @@ const draw = function ({ width, height, margin }) {
       });
     });
     const specialTitle = d3.select("#specialTitle").select(".detail");
-    d3.select("#btnYearG3")
+    d3.select("#groupdirection")
       .selectAll(".dropdown-item")
       .on("click", function (e, v) {
         const value = d3.select(this).attr("value");
@@ -162,9 +162,12 @@ const draw = function ({ width, height, margin }) {
           specialTitle.text("");
         } else {
           const v3 = store.customCatLevel.find((d) => d.key === value);
+          const v4 = [...(v3.value??[])];
+          // special case 
+          v4.push(v3)
           onChangedata({
             name: "SELECT",
-            cat: [null, null, [value], v3.value ?? []],
+            cat: [null, null, [value], v4],
           });
           specialTitle.text(value);
         }
@@ -605,7 +608,8 @@ const draw = function ({ width, height, margin }) {
       xScaleBand,
       xScaleinnerBand,
       _nodes,
-      layer,
+      xWidthinner,
+      xWidth,
       gap,
     } = store;
     const groupByLayer = d3.groups(_nodes, (d) => d._step);
@@ -639,16 +643,23 @@ const draw = function ({ width, height, margin }) {
       },
       (d) => Math.floor(d.step)
     );
-    gGrid
-      .selectAll("rect.bound")
+    const gbound = gGrid.selectAll(".bound")
+    .attr(
+        "transform",
+        (d) =>
+          `translate(${xScaleBand(d) - xWidthinner / 2 - gap * xWidth},${
+            groupByMainLayer.get(d).y0 - yHeightinner * (0.5 + gap)
+          })`
+      );
+      gbound
+      .select("rect")
       .attr(
         "height",
         (d) => groupByMainLayer.get(d).h + yHeightinner * (0.5 + gap) * 2
-      )
-      .attr(
-        "y",
-        (d) => groupByMainLayer.get(d).y0 - yHeightinner * (0.5 + gap)
       );
+      gbound
+      .select("text")
+      .attr("transform",d=> `translate(50,${(groupByMainLayer.get(d).h + yHeightinner * (0.5 + gap))/2}) rotate(-90)`);
 
     eNode.attr("transform", (d) => `translate(${d.x},${d.y})`);
     gLink.style("display", undefined);
