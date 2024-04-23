@@ -441,7 +441,7 @@ const draw = function ({ width, height, margin }) {
                   }`
               );
             g.append("div")
-              .attr("class", "colorbox h-4 w-6")
+              .attr("class", "colorbox h-3 w-4")
               .style("background-color", (d) => colorByCat(d.l));
             g.append("p")
               .attr("class", "textcolorbox h-4 leading-3 ml-1 mr-1 small")
