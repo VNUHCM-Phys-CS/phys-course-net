@@ -41,4 +41,7 @@ svg.onHighlight .node.highlight {
   to {
     filter: drop-shadow(0 0 20px #fff) drop-shadow(0 0 25px #009de6) drop-shadow(0 0 40px #009de6);
   }
+}
+.collapse.show {
+  visibility: unset;
 }/*# sourceMappingURL=main.css.map */
