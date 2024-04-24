@@ -165,18 +165,20 @@ const draw = function ({ width, height, margin }) {
             const v3 = store.customCatLevel.find((d) => d.key === value);
             const v4 = [...(v3.value??[])];
             // special case 
-            v4.push(v3)
+            v4.push(v3);
             onChangedata({
                 name: "SELECT",
                 cat: [null, null, [value], v4],
             });
             }else if (y==='4'){
                 const parent = store.customCatLevel.find((d) =>
-                d.value.find((e) => e === value)
+                    d.value.find((e) => e === value)
                 );
+                const v3 = [parent.key];
+                const v4 = [value,...v3];
                 onChangedata({
                     name: "SELECT",
-                    cat: [null, null, [parent.key], [value]],
+                    cat: [null, null, v3, v4],
                 });
             }
           specialTitle.text(value);
