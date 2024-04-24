@@ -14,17 +14,17 @@ const groupCat = [
 ]
 
 const filterG = [
-    {key:"filtergy3",y:3,v:[{v:"Chuyên ngành hướng 1",l:"CN hướng 1"},{v:"Chuyên ngành hướng 2",l:"CN hướng 2"},
-{v:"all",l:"Cả 2 hướng"}]},
+    {key:"filtergy3",y:3,v:[{v:"Chuyên ngành hướng 1",l:"CN hướng 1",s:"h1"},{v:"Chuyên ngành hướng 2",l:"CN hướng 2",s:"h2"},
+{v:"all",l:"Cả 2 hướng",s:"all3"}]},
     {key:"filtergy4",y:4,v:[
-        {v:"Chuyên ngành hướng 1 VLHN",l:"[1-VLHN] Vật Lý Hạt Nhân"},
-        {v:"Chuyên ngành hướng 1 VLĐC",l:"[1-VLĐC] Vật Lý Địa Cầu"},
-        {v:"Chuyên ngành hướng 1 VLLT",l:"[1-VLLT] Vật Lý Lý Thuyết"},
-        {v:"Chuyên ngành hướng 2 VLCR",l:"[2-VLCR] Vật Lý Chất Rắn"},
-        {v:"Chuyên ngành hướng 2 VLTH",l:"[2-VLTH] Vật Lý Tin Học"},
-        {v:"Chuyên ngành hướng 2 VLĐT",l:"[2-VLĐT] Vật Lý Điện Tử"},
-        {v:"Chuyên ngành hướng 2 VLUD",l:"[2-VLUD] Vật Lý Ứng Dụng"},
-        {v:"all",l:"Tất cả"},
+        {v:"Chuyên ngành hướng 1 VLHN",l:"[1-VLHN] Vật Lý Hạt Nhân",s:"VLHN"},
+        {v:"Chuyên ngành hướng 1 VLĐC",l:"[1-VLĐC] Vật Lý Địa Cầu",s:"VLDC"},
+        {v:"Chuyên ngành hướng 1 VLLT",l:"[1-VLLT] Vật Lý Lý Thuyết",s:"VLLT"},
+        {v:"Chuyên ngành hướng 2 VLCR",l:"[2-VLCR] Vật Lý Chất Rắn",s:"VLCR"},
+        {v:"Chuyên ngành hướng 2 VLTH",l:"[2-VLTH] Vật Lý Tin Học",s:"VLTH"},
+        {v:"Chuyên ngành hướng 2 VLĐT",l:"[2-VLĐT] Vật Lý Điện Tử",s:"VLDT"},
+        {v:"Chuyên ngành hướng 2 VLUD",l:"[2-VLUD] Vật Lý Ứng Dụng",s:"VLUD"},
+        {v:"all",l:"Tất cả",s:"all4"},
     ]},
 ]
 // init
@@ -41,6 +41,7 @@ loadNodeLinks()
         currentData = {nodes:[...graph.nodes],links:[...graph.links]};
         initFilter();
         drawFunc.graph(currentData).setColorByCat(catall).setCustomCat(groupCat).initZoom().draw().initFilter(onChangedata).forceInit();
+        getURL();
         function onChangedata({name,layer,cat}){
             currentData.nodes = allData.nodes;
             currentData.links = allData.links;
@@ -135,4 +136,19 @@ function initFilter() {
         });
 
     })
+}
+
+function getURL(){
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const l={};
+    filterG.forEach(d=>d.v.forEach((e,i)=>l[e.s]={y:d.y,i}));
+    const q = urlParams.get('q');
+    debugger
+    if (l[q] && l[q].y && l[q].i) {
+        d3.select(`input#divfilter${l[q].y}_input${l[q].i}`).dispatch("change");
+    }else{
+        // all
+    }
+    
 }
