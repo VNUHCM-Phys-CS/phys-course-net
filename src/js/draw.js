@@ -1,3 +1,4 @@
+const ALLCAT = "Tốt nghiệp";
 const draw = function ({ width, height, margin }) {
   const master = {};
   let widthInner = width - margin.left - margin.right;
@@ -165,7 +166,8 @@ const draw = function ({ width, height, margin }) {
             const v3 = store.customCatLevel.find((d) => d.key === value);
             const v4 = [...(v3.value??[])];
             // special case 
-            v4.push(v3);
+            v4.push(value);
+            v4.push(ALLCAT);
             onChangedata({
                 name: "SELECT",
                 cat: [null, null, [value], v4],
@@ -175,7 +177,7 @@ const draw = function ({ width, height, margin }) {
                     d.value.find((e) => e === value)
                 );
                 const v3 = [parent.key];
-                const v4 = [value,...v3];
+                const v4 = [value,...v3,ALLCAT];
                 onChangedata({
                     name: "SELECT",
                     cat: [null, null, v3, v4],

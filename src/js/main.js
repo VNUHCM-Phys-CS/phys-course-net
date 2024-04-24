@@ -15,7 +15,7 @@ const groupCat = [
 
 const filterG = [
     {key:"filtergy3",y:3,v:[{v:"Chuyên ngành hướng 1",l:"CN hướng 1",s:"h1"},{v:"Chuyên ngành hướng 2",l:"CN hướng 2",s:"h2"},
-{v:"all",l:"Cả 2 hướng",s:"all3"}]},
+]},
     {key:"filtergy4",y:4,v:[
         {v:"Chuyên ngành hướng 1 VLHN",l:"[1-VLHN] Vật Lý Hạt Nhân",s:"VLHN"},
         {v:"Chuyên ngành hướng 1 VLĐC",l:"[1-VLĐC] Vật Lý Địa Cầu",s:"VLDC"},
@@ -113,14 +113,14 @@ function initFilter() {
             .attr("data-bs-dismiss","modal");
             div.append('input')
             .attr('class',"form-check-input")
-            .attr('id',(e,i)=>`divfilter${d.y}_input${i}`)
+            .attr('id',(e,i)=>`divfilter_input${d.y}_${i}`)
             .attr('type',"radio")
-            .attr('name',`divfilter${d.y}`)
+            .attr('name',`divfilter`)
             .attr('data-filter-y',d.y)
             .attr('value',d=>d.v)
             ;
             div.append('label').attr('class','form-check-label')
-            .attr('for',(e,i)=>`divfilter${d.y}_input${i}`)
+            .attr('for',(e,i)=>`divfilter_input${d.y}_${i}`)
             .html(d=>d.l);
             return div;
         },update=>{
@@ -130,7 +130,7 @@ function initFilter() {
             .attr('name',`divfilter${d.y}`)
             .attr('value',d=>d.v);
             update.select('label')
-            .attr('for',(e,i)=>`div${d.y}_input${i}`)
+            .attr('for',(e,i)=>`div_input${d.y}_${i}`)
             .html(d=>d.l);
             return update;
         });
@@ -146,7 +146,7 @@ function getURL(){
     const q = urlParams.get('q');
     debugger
     if (l[q] && l[q].y && l[q].i) {
-        d3.select(`input#divfilter${l[q].y}_input${l[q].i}`).dispatch("change");
+        d3.select(`input#divfilter_input${l[q].y}_${l[q].i}`).dispatch("change");
     }else{
         // all
     }
