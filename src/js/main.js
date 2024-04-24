@@ -108,14 +108,16 @@ function initFilter() {
         .data(d.v)
         .join(enter=>{
             const div = enter.append('div')
-            .attr('class','form-check');
+            .attr('class','form-check')
+            .attr("data-bs-dismiss","modal");
             div.append('input')
             .attr('class',"form-check-input")
             .attr('id',(e,i)=>`divfilter${d.y}_input${i}`)
             .attr('type',"radio")
             .attr('name',`divfilter${d.y}`)
             .attr('data-filter-y',d.y)
-            .attr('value',d=>d.v);
+            .attr('value',d=>d.v)
+            ;
             div.append('label').attr('class','form-check-label')
             .attr('for',(e,i)=>`divfilter${d.y}_input${i}`)
             .html(d=>d.l);

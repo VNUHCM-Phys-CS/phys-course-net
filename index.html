@@ -105,7 +105,7 @@
                             </div>
                             Bộ lọc
                         </button>
-                        <button class="btn btn-primary flex items-center gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#legendHolder" aria-expanded="true" aria-controls="collapseExample">
+                        <button class="btn btn-primary flex items-center gap-1" type="button" data-bs-toggle="collapse" data-bs-target="#legendHolder" aria-expanded="true" aria-controls="legendHolder">
                             <div>
                                 <svg class="toggleicon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
@@ -144,14 +144,18 @@
                 <g class="holderNode"></g>
             </g>
         </svg>
-        <div id="legendHolder" class="collapse show legend flex flex-warp fixed bottom-1 right-1 max-w-screen-sm max-h-1/2 bg-slate-50/75 p-0.5 rounded-md border-slate-500 border-solid border-t-2 border-l-2">
-            <div class="require p-1 mr-4 flex-none">
-                <div class="small rounded-md m-1 p-1 bg-slate-300 border-2 border-slate-500 border-solid">Bắt buộc</div>
-                <div class="small rounded-md m-1 p-1 bg-slate-300">Tự chọn</div>
-                <div class="small rounded-md m-1 p-1 bg-slate-300 border-2 border-slate-500 border-dotted">Không tính GPA</div>
-            </div>
-            <div class="cat p-1 grow max-h-1/2">
+        <div id="legendHolder" class="collapse show legend fixed bottom-1 right-1">
+            <div class="relative flex flex-warp max-w-screen-sm max-h-1/2 bg-slate-50/75 p-0.5 rounded-md border-slate-500 border-solid border-t-2 border-l-2">
+                <div class="require p-1 mr-4 flex-none">
+                    <div class="small rounded-md m-1 p-1 bg-slate-300 border-2 border-slate-500 border-solid">Bắt buộc</div>
+                    <div class="small rounded-md m-1 p-1 bg-slate-300">Tự chọn</div>
+                    <div class="small rounded-md m-1 p-1 bg-slate-300 border-2 border-slate-500 border-dotted">Không tính GPA</div>
+                </div>
+                <div class="cat p-1 grow overflow-y-auto" style="max-height: 50dvh">
 
+                </div>
+                <div id="hideLegend" class="absolute top-1 right-1 -translate-y-full bg-slate-50/75 px-2 pb-1.5 pt-1 rounded-md border-slate-500 border-solid border-t-2 border-l-2"
+                data-bs-toggle="collapse" data-bs-target="#legendHolder" aria-expanded="true" aria-controls="legendHolder">Ẩn</div>
             </div>
         </div>
         <div class="absolute left-12 top-24" id="specialTitle">
@@ -159,7 +163,7 @@
             <p class="h2 detail"></h1>
         </div>
         <div id="modalfilter" class="modal" tabindex="-1">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-scrollable">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title">Bộ lọc</h5>
