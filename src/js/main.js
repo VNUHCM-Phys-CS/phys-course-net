@@ -14,7 +14,8 @@ const groupCat = [
 ]
 
 const filterG = [
-    {key:"filtergy3",y:3,v:[{v:"Chuyên ngành hướng 1",l:"CN hướng 1"},{v:"Chuyên ngành hướng 2",l:"CN hướng 2"}]},
+    {key:"filtergy3",y:3,v:[{v:"Chuyên ngành hướng 1",l:"CN hướng 1"},{v:"Chuyên ngành hướng 2",l:"CN hướng 2"},
+{v:"all",l:"Cả 2 hướng"}]},
     {key:"filtergy4",y:4,v:[
         {v:"Chuyên ngành hướng 1 VLHN",l:"[1-VLHN] Vật Lý Hạt Nhân"},
         {v:"Chuyên ngành hướng 1 VLĐC",l:"[1-VLĐC] Vật Lý Địa Cầu"},
@@ -23,6 +24,7 @@ const filterG = [
         {v:"Chuyên ngành hướng 2 VLTH",l:"[2-VLTH] Vật Lý Tin Học"},
         {v:"Chuyên ngành hướng 2 VLĐT",l:"[2-VLĐT] Vật Lý Điện Tử"},
         {v:"Chuyên ngành hướng 2 VLUD",l:"[2-VLUD] Vật Lý Ứng Dụng"},
+        {v:"all",l:"Tất cả"},
     ]},
 ]
 // init
@@ -37,6 +39,7 @@ loadNodeLinks()
         allData.links=[...graph.links];
         const catall = _.uniq(allData.nodes.map(d=>d[colorKEY]));
         currentData = {nodes:[...graph.nodes],links:[...graph.links]};
+        initFilter();
         drawFunc.graph(currentData).setColorByCat(catall).setCustomCat(groupCat).initZoom().draw().initFilter(onChangedata).forceInit();
         function onChangedata({name,layer,cat}){
             currentData.nodes = allData.nodes;
@@ -97,3 +100,37 @@ const btnfilter = document.getElementById('btnfilter')
 modalfilter.addEventListener('shown.bs.modal', () => {
     btnfilter.focus()
 })
+
+function initFilter() {
+    filterG.forEach(d=>{
+        d3.select(`#${d.key}`)
+        .selectAll('div.form-check')
+        .data(d.v)
+        .join(enter=>{
+            const div = enter.append('div')
+            .attr('class','form-check');
+            div.append('input')
+            .attr('class',"form-check-input")
+            .attr('id',(e,i)=>`divfilter${d.y}_input${i}`)
+            .attr('type',"radio")
+            .attr('name',`divfilter${d.y}`)
+            .attr('data-filter-y',d.y)
+            .attr('value',d=>d.v);
+            div.append('label').attr('class','form-check-label')
+            .attr('for',(e,i)=>`divfilter${d.y}_input${i}`)
+            .html(d=>d.l);
+            return div;
+        },update=>{
+            update.select('input')
+            .attr('id',(e,i)=>`div${d.y}_input${i}`)
+            .attr('data-filter-y',d.y)
+            .attr('name',`divfilter${d.y}`)
+            .attr('value',d=>d.v);
+            update.select('label')
+            .attr('for',(e,i)=>`div${d.y}_input${i}`)
+            .html(d=>d.l);
+            return update;
+        });
+
+    })
+}

@@ -125,71 +125,64 @@ const draw = function ({ width, height, margin }) {
   };
   master.initFilter = (onChangedata, state) => {
     // connect with button
-    [1, 2, 3, 4].forEach((d) => {
-      const holder = d3
-        .select("#btnYear" + d)
-        .on("mouseover touchstart", (e, v) =>
-          d3.select("#areaYear" + d).classed("blink", true)
-        )
-        .on("mouseleave touchend", (e, v) =>
-          d3.select("#areaYear" + d).classed("blink", false)
-        );
-      const dropdownbtn = d3.select(`#btnYearG${d} .dropdown-toggle`);
-      const checkbox = holder.select(".form-check-input");
-      checkbox.on("change", (e) => {
-        if (e.target.checked) {
-          holder.classed("btn-info", true);
-          holder.classed("btn-secondary", false);
-          dropdownbtn.classed("btn-info", true);
-          dropdownbtn.classed("btn-secondary", false);
-          onChangedata({ name: "ADD", layer: d });
-        } else {
-          holder.classed("btn-info", false);
-          holder.classed("btn-secondary", true);
-          dropdownbtn.classed("btn-info", false);
-          dropdownbtn.classed("btn-secondary", true);
-          onChangedata({ name: "REMOVE", layer: d });
-        }
-      });
-    });
+    // [1, 2, 3, 4].forEach((d) => {
+    //   const holder = d3
+    //     .select("#btnYear" + d)
+    //     .on("mouseover touchstart", (e, v) =>
+    //       d3.select("#areaYear" + d).classed("blink", true)
+    //     )
+    //     .on("mouseleave touchend", (e, v) =>
+    //       d3.select("#areaYear" + d).classed("blink", false)
+    //     );
+    //   const dropdownbtn = d3.select(`#btnYearG${d} .dropdown-toggle`);
+    //   const checkbox = holder.select(".form-check-input");
+    //   checkbox.on("change", (e) => {
+    //     if (e.target.checked) {
+    //       holder.classed("btn-info", true);
+    //       holder.classed("btn-secondary", false);
+    //       dropdownbtn.classed("btn-info", true);
+    //       dropdownbtn.classed("btn-secondary", false);
+    //       onChangedata({ name: "ADD", layer: d });
+    //     } else {
+    //       holder.classed("btn-info", false);
+    //       holder.classed("btn-secondary", true);
+    //       dropdownbtn.classed("btn-info", false);
+    //       dropdownbtn.classed("btn-secondary", true);
+    //       onChangedata({ name: "REMOVE", layer: d });
+    //     }
+    //   });
+    // });
     const specialTitle = d3.select("#specialTitle").select(".detail");
-    d3.select("#groupdirection")
-      .selectAll(".dropdown-item")
-      .on("click", function (e, v) {
-        const value = d3.select(this).attr("value");
+    d3.selectAll(".form-check input")
+      .on("change", function (e, v) {
+        const value = e.target.value;
+        const y = d3.select(this).attr('data-filter-y');
         if (value === "all") {
           onChangedata({ name: "SELECT", cat: [] });
           specialTitle.text("");
         } else {
-          const v3 = store.customCatLevel.find((d) => d.key === value);
-          const v4 = [...(v3.value??[])];
-          // special case 
-          v4.push(v3)
-          onChangedata({
-            name: "SELECT",
-            cat: [null, null, [value], v4],
-          });
+            if (y==='3'){
+            const v3 = store.customCatLevel.find((d) => d.key === value);
+            const v4 = [...(v3.value??[])];
+            // special case 
+            v4.push(v3)
+            onChangedata({
+                name: "SELECT",
+                cat: [null, null, [value], v4],
+            });
+            }else if (y==='4'){
+                const parent = store.customCatLevel.find((d) =>
+                d.value.find((e) => e === value)
+                );
+                onChangedata({
+                    name: "SELECT",
+                    cat: [null, null, [parent.key], [value]],
+                });
+            }
           specialTitle.text(value);
         }
       });
-    d3.select("#btnYearG4")
-      .selectAll(".dropdown-item")
-      .on("click", function (e, v) {
-        const value = d3.select(this).attr("value");
-        if (value === "all") {
-          onChangedata({ name: "SELECT", cat: [] });
-          specialTitle.text("");
-        } else {
-          const parent = store.customCatLevel.find((d) =>
-            d.value.find((e) => e === value)
-          );
-          onChangedata({
-            name: "SELECT",
-            cat: [null, null, [parent.key], [value]],
-          });
-          specialTitle.text(value);
-        }
-      });
+    
     return master;
   };
   master.draw = () => {
