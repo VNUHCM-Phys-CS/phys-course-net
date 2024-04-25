@@ -125,34 +125,6 @@ const draw = function ({ width, height, margin }) {
     return master;
   };
   master.initFilter = (onChangedata, state) => {
-    // connect with button
-    // [1, 2, 3, 4].forEach((d) => {
-    //   const holder = d3
-    //     .select("#btnYear" + d)
-    //     .on("mouseover touchstart", (e, v) =>
-    //       d3.select("#areaYear" + d).classed("blink", true)
-    //     )
-    //     .on("mouseleave touchend", (e, v) =>
-    //       d3.select("#areaYear" + d).classed("blink", false)
-    //     );
-    //   const dropdownbtn = d3.select(`#btnYearG${d} .dropdown-toggle`);
-    //   const checkbox = holder.select(".form-check-input");
-    //   checkbox.on("change", (e) => {
-    //     if (e.target.checked) {
-    //       holder.classed("btn-info", true);
-    //       holder.classed("btn-secondary", false);
-    //       dropdownbtn.classed("btn-info", true);
-    //       dropdownbtn.classed("btn-secondary", false);
-    //       onChangedata({ name: "ADD", layer: d });
-    //     } else {
-    //       holder.classed("btn-info", false);
-    //       holder.classed("btn-secondary", true);
-    //       dropdownbtn.classed("btn-info", false);
-    //       dropdownbtn.classed("btn-secondary", true);
-    //       onChangedata({ name: "REMOVE", layer: d });
-    //     }
-    //   });
-    // });
     const specialTitle = d3.select("#specialTitle").select(".detail");
     d3.selectAll(".form-check input")
       .on("change", function (e, v) {
@@ -512,6 +484,7 @@ const draw = function ({ width, height, margin }) {
             [mainxKEY]: maink,
             [subxKEY]: (i - maink) / xstep + 1,
             [colorKEY]: l.target[colorKEY],
+            isVirtual: true
           };
           store._nodes.push(target);
           idvirtual--;
@@ -615,18 +588,31 @@ const draw = function ({ width, height, margin }) {
     groupByLayer.forEach(([k, g]) => {
       g.sort((a, b) => a.y - b.y);
       const maxmem = g.length;
-      let maxH = yHeightinner * maxmem + ymingap * (maxmem - 1);
-      let posy = (heightInner - maxH) / 2;
+      let yvisual = yHeightinner/5;
+      let maxH = 0;//yHeightinner * maxmem + ymingap * (maxmem - 1);
+      g.forEach((d) => {
+        if (d.isVirtual)
+          maxH += yvisual + ymingap;
+        else
+          maxH += yHeightinner + ymingap;
+      });
+      if (maxmem)
+        maxH-=ymingap;
+
+      let posy = -maxH/2;//(heightInner - maxH) / 2;
       const lmax = { step: k, y0: Infinity, y1: -Infinity };
       maxHL.push(lmax);
       g.forEach((d) => {
         d.x = xScaleBand(d[mainxKEY]) + xScaleinnerBand(d[subxKEY]);
+        let hh = yHeightinner/2;
+        if (d.isVirtual) 
+          hh = yvisual/2;
+        posy += hh;
         d.y = posy;
-        if (!d.isVirtual) {
-          lmax.y0 = Math.min(lmax.y0, d.y);
-          lmax.y1 = Math.max(lmax.y1, d.y);
-        }
-        posy += yHeightinner + ymingap;
+        posy += ymingap;
+        lmax.y0 = Math.min(lmax.y0, d.y);
+        lmax.y1 = Math.max(lmax.y1, d.y);
+        posy += hh;
       });
     });
 
