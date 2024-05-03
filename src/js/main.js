@@ -144,7 +144,6 @@ function getURL(){
     const l={};
     filterG.forEach(d=>d.v.forEach((e,i)=>l[e.s]={y:d.y,i}));
     const q = urlParams.get('q');
-    debugger
     if (l[q] && l[q].y && l[q].i) {
         d3.select(`input#divfilter_input${l[q].y}_${l[q].i}`).dispatch("change");
     }else{
